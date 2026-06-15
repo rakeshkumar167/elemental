@@ -11,8 +11,9 @@ describe('relax (FIRE)', () => {
     const coords = new Float64Array([0, 0, 0, EQ * 1.3, 0, 0]);
     const result = relax(coords, LJ_REDUCED);
     expect(result.converged).toBe(true);
-    const r = coords[3]; // x-coord of second atom
-    expect(r).toBeCloseTo(EQ, 2);
+    // Check interatomic distance, not absolute position (CoM not pinned)
+    const separation = Math.abs(coords[3] - coords[0]);
+    expect(separation).toBeCloseTo(EQ, 2);
   });
 
   it('energy after relaxation is ≤ energy before relaxation', () => {

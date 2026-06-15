@@ -14,6 +14,15 @@ export interface RelaxResult {
   converged: boolean;
 }
 
+// Center cluster at origin before FIRE (ensures CoM stays fixed — Newton's 3rd law)
+function centerCoords(c: Float64Array): void {
+  const N = c.length / 3;
+  let cx = 0, cy = 0, cz = 0;
+  for (let i = 0; i < N; i++) { cx += c[i*3]; cy += c[i*3+1]; cz += c[i*3+2]; }
+  cx /= N; cy /= N; cz /= N;
+  for (let i = 0; i < N; i++) { c[i*3] -= cx; c[i*3+1] -= cy; c[i*3+2] -= cz; }
+}
+
 export function relax(
   coords: Float64Array,   // modified in-place
   params: PotentialParams,
@@ -31,13 +40,13 @@ export function relax(
   let dt = dt0;
   let nPos = 0;
 
+  // Center cluster at origin so CoM stays fixed throughout FIRE (Newton's 3rd law: ∑F_i = 0)
+  centerCoords(coords);
+
   for (let iter = 0; iter < maxIter; iter++) {
     const { energy, gradient } = computePotential(coords, params);
 
     if (!isFinite(energy)) return { energy, iters: iter, converged: false };
-
-    // Pin first atom: zero its gradient to remove translational drift
-    gradient[0] = 0; gradient[1] = 0; gradient[2] = 0;
 
     // RMS force convergence check  (F = -gradient)
     let rms2 = 0;
@@ -46,8 +55,6 @@ export function relax(
 
     // Velocity update: v += dt · F  (F = -grad)
     for (let k = 0; k < N3; k++) vel[k] -= dt * gradient[k];
-    // Keep first atom pinned: zero its velocity components
-    vel[0] = 0; vel[1] = 0; vel[2] = 0;
 
     // Power P = F · v = -grad · v
     let P = 0, v2 = 0, f2 = 0;
@@ -79,8 +86,12 @@ export function relax(
       vel.fill(0);
     }
 
-    // Position update
-    for (let k = 0; k < N3; k++) coords[k] += dt * vel[k];
+    // Position update — limit max displacement per step to avoid FIRE instability
+    const maxDisp = 0.2;
+    let maxStep = 0;
+    for (let k = 0; k < N3; k++) maxStep = Math.max(maxStep, Math.abs(dt * vel[k]));
+    const scale = maxStep > maxDisp ? maxDisp / maxStep : 1;
+    for (let k = 0; k < N3; k++) coords[k] += scale * dt * vel[k];
   }
 
   const { energy } = computePotential(coords, params);
