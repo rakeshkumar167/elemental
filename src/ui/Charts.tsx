@@ -1,4 +1,3 @@
-// src/ui/Charts.tsx
 import { useEffect, useRef } from 'react';
 import uPlot from 'uplot';
 import 'uplot/dist/uPlot.min.css';
@@ -45,7 +44,11 @@ export function Charts() {
 
   // Update data
   useEffect(() => {
-    if (!plotRef.current || history.length === 0) return;
+    if (!plotRef.current) return;
+    if (history.length === 0) {
+      plotRef.current.setData([[0], [null as unknown as number], [null as unknown as number]]);
+      return;
+    }
     plotRef.current.setData([
       history.map(h => h.gen),
       history.map(h => h.best),

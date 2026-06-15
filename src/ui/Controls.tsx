@@ -1,9 +1,13 @@
-// src/ui/Controls.tsx
 import { useStore } from '../state/store';
 
 export function Controls() {
-  const config       = useStore(s => s.config);
-  const status       = useStore(s => s.status);
+  const n               = useStore(s => s.config.n);
+  const populationSize  = useStore(s => s.config.populationSize);
+  const mutationRate    = useStore(s => s.config.mutationRate);
+  const mutationSigma   = useStore(s => s.config.mutationSigma);
+  const potentialParams = useStore(s => s.config.potentialParams);
+  const seed            = useStore(s => s.config.seed);
+  const status          = useStore(s => s.status);
   const setConfig    = useStore(s => s.setConfig);
   const updateParams = useStore(s => s.updateParams);
   const start        = useStore(s => s.start);
@@ -21,9 +25,9 @@ export function Controls() {
       {/* Cluster size */}
       <label className="block space-y-1">
         <span className="text-xs text-gray-400 uppercase tracking-wider">
-          Cluster size — N = {config.n}
+          Cluster size — N = {n}
         </span>
-        <input type="range" min={2} max={80} value={config.n}
+        <input type="range" min={2} max={80} value={n}
           onChange={e => setConfig({ n: parseInt(e.target.value) })}
           disabled={!isIdle} className="w-full accent-blue-500" />
       </label>
@@ -31,9 +35,9 @@ export function Controls() {
       {/* Population */}
       <label className="block space-y-1">
         <span className="text-xs text-gray-400 uppercase tracking-wider">
-          Population — {config.populationSize}
+          Population — {populationSize}
         </span>
-        <input type="range" min={5} max={100} value={config.populationSize}
+        <input type="range" min={5} max={100} value={populationSize}
           onChange={e => setConfig({ populationSize: parseInt(e.target.value) })}
           disabled={!isIdle} className="w-full accent-blue-500" />
       </label>
@@ -41,9 +45,9 @@ export function Controls() {
       {/* Mutation rate */}
       <label className="block space-y-1">
         <span className="text-xs text-gray-400 uppercase tracking-wider">
-          Mutation rate — {Math.round(config.mutationRate * 100)}%
+          Mutation rate — {Math.round(mutationRate * 100)}%
         </span>
-        <input type="range" min={0} max={100} value={Math.round(config.mutationRate * 100)}
+        <input type="range" min={0} max={100} value={Math.round(mutationRate * 100)}
           onChange={e => updateParams({ mutationRate: parseInt(e.target.value) / 100 })}
           className="w-full accent-blue-500" />
       </label>
@@ -51,9 +55,9 @@ export function Controls() {
       {/* Mutation sigma */}
       <label className="block space-y-1">
         <span className="text-xs text-gray-400 uppercase tracking-wider">
-          Rattle σ — {config.mutationSigma.toFixed(2)} σ
+          Rattle σ — {mutationSigma.toFixed(2)} σ
         </span>
-        <input type="range" min={5} max={100} value={Math.round(config.mutationSigma * 100)}
+        <input type="range" min={5} max={100} value={Math.round(mutationSigma * 100)}
           onChange={e => updateParams({ mutationSigma: parseInt(e.target.value) / 100 })}
           className="w-full accent-blue-500" />
       </label>
@@ -61,9 +65,9 @@ export function Controls() {
       {/* Potential */}
       <label className="block space-y-1">
         <span className="text-xs text-gray-400 uppercase tracking-wider">Potential</span>
-        <select value={config.potentialParams.type}
+        <select value={potentialParams.type}
           onChange={e => setConfig({
-            potentialParams: { ...config.potentialParams, type: e.target.value as 'lj' | 'morse' }
+            potentialParams: { ...potentialParams, type: e.target.value as 'lj' | 'morse' }
           })}
           disabled={!isIdle}
           className="w-full rounded bg-gray-700 border border-gray-600 px-2 py-1 text-sm text-gray-100"
@@ -76,7 +80,7 @@ export function Controls() {
       {/* Seed */}
       <label className="block space-y-1">
         <span className="text-xs text-gray-400 uppercase tracking-wider">Seed</span>
-        <input type="number" value={config.seed}
+        <input type="number" value={seed}
           onChange={e => setConfig({ seed: parseInt(e.target.value) || 0 })}
           disabled={!isIdle}
           className="w-full rounded bg-gray-700 border border-gray-600 px-2 py-1 text-sm text-gray-100" />
