@@ -12,7 +12,7 @@ export function ClusterScene() {
   const element  = ELEMENT_MAP.get(symbol) ?? ELEMENTS[0];
 
   const bg             = theme === 'dark' ? '#111827' : '#dde6ef';
-  const ambientIntensity = theme === 'dark' ? 0.35 : 0.65;
+  const ambientIntensity = theme === 'dark' ? 0.08 : 0.15;
   const placeholderColor = theme === 'dark' ? '#4b5563' : '#94a3b8';
 
   return (
@@ -22,8 +22,8 @@ export function ClusterScene() {
       style={{ background: bg }}
     >
       <ambientLight intensity={ambientIntensity} />
-      <pointLight position={[15, 15, 15]} intensity={1.4} />
-      <pointLight position={[-15, -10, -10]} intensity={0.4} />
+      <pointLight position={[10, 10, 15]} intensity={3.0} />
+      <pointLight position={[-10, -8, -8]} intensity={0.5} />
       {snapshot ? (
         <>
           <Atoms coords={snapshot.bestCoords} element={element} />

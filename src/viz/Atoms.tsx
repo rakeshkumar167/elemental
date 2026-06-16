@@ -10,6 +10,7 @@ interface AtomsProps {
 
 function lerp(a: number, b: number, t: number) { return a + (b - a) * t; }
 
+
 export function Atoms({ coords, element }: AtomsProps) {
   const count   = coords.length / 3;
   const meshRef = useRef<THREE.InstancedMesh>(null);
@@ -52,7 +53,7 @@ export function Atoms({ coords, element }: AtomsProps) {
   return (
     <instancedMesh ref={meshRef} args={[undefined, undefined, count]}>
       <sphereGeometry args={[1, 24, 24]} />
-      <meshPhongMaterial color={element.color} shininess={100} specular="#ffffff" />
+      <meshPhongMaterial color={element.color} emissive={element.color} emissiveIntensity={0.35} specular="#ffffff" shininess={200} />
     </instancedMesh>
   );
 }
