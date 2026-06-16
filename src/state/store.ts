@@ -28,6 +28,7 @@ interface StoreState {
   history: HistoryPoint[];
   error: string | null;
   worker: Worker | null;
+  theme: 'dark' | 'light';
 
   setConfig: (partial: Partial<GAConfig>) => void;
   start: () => void;
@@ -36,6 +37,7 @@ interface StoreState {
   step: () => void;
   reset: () => void;
   updateParams: (partial: Partial<GAConfig>) => void;
+  toggleTheme: () => void;
 }
 
 function cmd(worker: Worker | null, msg: WorkerCommand): void {
@@ -49,6 +51,7 @@ export const useStore = create<StoreState>((set, get) => ({
   history: [],
   error: null,
   worker: null,
+  theme: 'dark',
 
   setConfig: (partial) => set(s => ({ config: { ...s.config, ...partial } })),
 
@@ -100,4 +103,6 @@ export const useStore = create<StoreState>((set, get) => ({
     set(s => ({ config: { ...s.config, ...partial } }));
     cmd(get().worker, { type: 'updateParams', params: partial });
   },
+
+  toggleTheme: () => set(s => ({ theme: s.theme === 'dark' ? 'light' : 'dark' })),
 }));

@@ -4,9 +4,10 @@ import * as THREE from 'three';
 interface BondsProps {
   coords: Float32Array;
   cutoff?: number; // in σ units, default 1.8
+  theme?: 'dark' | 'light';
 }
 
-export function Bonds({ coords, cutoff = 1.8 }: BondsProps) {
+export function Bonds({ coords, cutoff = 1.8, theme = 'dark' }: BondsProps) {
   const up = useMemo(() => new THREE.Vector3(0, 1, 0), []);
 
   const pairs = useMemo(() => {
@@ -39,7 +40,7 @@ export function Bonds({ coords, cutoff = 1.8 }: BondsProps) {
         return (
           <mesh key={idx} position={mid} quaternion={quat}>
             <cylinderGeometry args={[0.04, 0.04, len, 6, 1]} />
-            <meshPhongMaterial color="#aaaaaa" transparent opacity={0.5} />
+            <meshPhongMaterial color={theme === 'light' ? '#777777' : '#aaaaaa'} transparent opacity={0.5} />
           </mesh>
         );
       })}
