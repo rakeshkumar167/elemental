@@ -7,7 +7,7 @@ interface BondsProps {
   theme?: 'dark' | 'light';
 }
 
-export function Bonds({ coords, cutoff = 1.8, theme = 'dark' }: BondsProps) {
+export function Bonds({ coords, cutoff = 1.8 }: BondsProps) {
   const up = useMemo(() => new THREE.Vector3(0, 1, 0), []);
 
   const pairs = useMemo(() => {
