@@ -3,14 +3,15 @@ import { ELEMENTS } from '../data/elements';
 import { useStore } from '../state/store';
 
 export function ElementPicker() {
-  const symbol   = useStore(s => s.config.elementSymbol);
-  const status   = useStore(s => s.status);
+  const symbol    = useStore(s => s.config.elementSymbol);
+  const status    = useStore(s => s.status);
+  const theme     = useStore(s => s.theme);
   const setConfig = useStore(s => s.setConfig);
   const disabled  = status !== 'idle';
 
   return (
     <div>
-      <p className="text-xs text-gray-400 uppercase tracking-wider mb-2">Element</p>
+      <p className={`text-xs uppercase tracking-wider mb-2 ${theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`}>Element</p>
       <div className="flex gap-1 flex-wrap">
         {ELEMENTS.map(el => (
           <button

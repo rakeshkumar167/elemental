@@ -27,19 +27,27 @@ const PRESETS: Array<{ label: string; desc: string; config: Partial<GAConfig> }>
 
 export function Presets() {
   const status    = useStore(s => s.status);
+  const theme     = useStore(s => s.theme);
   const setConfig = useStore(s => s.setConfig);
+
+  const isDark = theme === 'dark';
 
   return (
     <div className="space-y-1">
-      <p className="text-xs text-gray-400 uppercase tracking-wider mb-2">Presets</p>
+      <p className={`text-xs uppercase tracking-wider mb-2 ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>
+        Presets
+      </p>
       {PRESETS.map(preset => (
         <button
           key={preset.label}
           onClick={() => setConfig(preset.config)}
           disabled={status !== 'idle'}
           title={preset.desc}
-          className="w-full text-left px-3 py-1.5 rounded text-sm hover:bg-gray-700 transition-colors
-                     disabled:opacity-40 disabled:cursor-not-allowed text-gray-200"
+          className={`w-full text-left px-3 py-1.5 rounded text-sm transition-colors
+                      disabled:opacity-40 disabled:cursor-not-allowed
+                      ${isDark
+                        ? 'text-gray-200 hover:bg-gray-700'
+                        : 'text-gray-700 hover:bg-gray-100'}`}
         >
           {preset.label}
         </button>

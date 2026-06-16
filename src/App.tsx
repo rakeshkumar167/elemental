@@ -62,8 +62,7 @@ export default function App() {
         <div className="flex-1 relative min-h-0">
           <ClusterScene />
         </div>
-        {/* Chart panel stays dark for readability */}
-        <div className={`h-64 flex-shrink-0 border-t bg-gray-800/90 px-4 py-3 overflow-y-auto ${divider}`}>
+        <div className={`h-64 flex-shrink-0 border-t px-4 py-3 overflow-y-auto ${divider} ${isDark ? 'bg-gray-800/90' : 'bg-gray-50'}`}>
           <Charts />
         </div>
       </main>

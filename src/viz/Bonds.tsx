@@ -40,7 +40,7 @@ export function Bonds({ coords, cutoff = 1.8, theme = 'dark' }: BondsProps) {
         return (
           <mesh key={idx} position={mid} quaternion={quat}>
             <cylinderGeometry args={[0.04, 0.04, len, 6, 1]} />
-            <meshPhongMaterial color={theme === 'light' ? '#777777' : '#aaaaaa'} transparent opacity={0.5} />
+            <meshPhongMaterial color={theme === 'light' ? '#555555' : '#aaaaaa'} transparent opacity={0.8} />
           </mesh>
         );
       })}
