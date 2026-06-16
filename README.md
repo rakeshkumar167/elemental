@@ -1,5 +1,7 @@
 # Elemental
 
+![Elemental screenshot](screenshot.png)
+
 A real-time genetic algorithm (GA) cluster optimizer and 3D visualizer for atomic structures. Given an element and atom count, Elemental evolves a population of candidate clusters toward the minimum-energy configuration using the Lennard-Jones potential.
 
 ## What it does
